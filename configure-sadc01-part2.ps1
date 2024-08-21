@@ -2,6 +2,8 @@
 # This script is designed to be run inside of a lab you setup in at ServerAcademy.com
 # Run this script AFTER you run part 1 and have rebooted the server
 
+# NOTE: Make sure you have logged into your server as a DOMAIN administrator and not localAdmin
+
 # Install the DHCP Server role
 Install-WindowsFeature -Name DHCP -IncludeManagementTools
 
@@ -37,9 +39,9 @@ foreach ($User in $Users) {
 
 # Create Users in the Admins OU
 $AdminUsers = @(
-    @{Name="Paul Hill (Admin)"; SamAccountName="Paul.Hill.Admin"; Path="OU=Admins,OU=ServerAcademy,$DomainName"},
-    @{Name="Robert Hill (Admin)"; SamAccountName="Robert.Hill.Admin"; Path="OU=Admins,OU=ServerAcademy,$DomainName"},
-    @{Name="Test User (Admin)"; SamAccountName="Test.User.Admin"; Path="OU=Admins,OU=ServerAcademy,$DomainName"}
+    @{Name="Paul Hill (Admin)"; SamAccountName="Paul.Hill-Admin"; Path="OU=Admins,OU=ServerAcademy,$DomainName"},
+    @{Name="Robert Hill (Admin)"; SamAccountName="Robert.Hill-Admin"; Path="OU=Admins,OU=ServerAcademy,$DomainName"},
+    @{Name="Test User (Admin)"; SamAccountName="Test.User-Admin"; Path="OU=Admins,OU=ServerAcademy,$DomainName"}
 )
 
 foreach ($AdminUser in $AdminUsers) {

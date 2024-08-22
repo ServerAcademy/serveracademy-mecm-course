@@ -12,7 +12,16 @@
 Install-WindowsFeature -Name DHCP -IncludeManagementTools
 
 # Configure DHCP scope
-Add-DhcpServerv4Scope -Name "Clients" -StartRange 10.0.2.100 -EndRange 10.0.2.200 -SubnetMask 255.255.255.0 -State Active
+$ScopeName = "Clients"
+$StartRange = "10.0.2.100"
+$EndRange = "10.0.2.200"
+$SubnetMask = "255.255.255.0"
+$DefaultGateway = "10.0.2.1"
+$DefaultGateway = "10.0.2.1"
+$DnsServer = "10.0.2.10"
+Add-DhcpServerv4Scope -Name $ScopeName -StartRange $StartRange -EndRange $EndRange -SubnetMask $SubnetMask -State Active
+Set-DhcpServerv4OptionValue -ScopeId 10.0.2.0 -Router $DefaultGateway
+Set-DhcpServerv4OptionValue -ScopeId 10.0.2.0 -DnsServer $DnsServer
 
 # Define the domain name
 $DomainName = "serveracademy.com"

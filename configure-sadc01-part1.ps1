@@ -3,6 +3,10 @@
 # This script should run after you complete the Server Academy (SADC01) Domain Controller OS installation. After this script is complete,
 # run part 2 to finish the DC configuration.
 
+# Run the following command to change your script execution policy so you can run this script:
+
+# Set-ExecutionPolicy -ExecutionPolicy Unrestricted
+
 # Set Variables
 $DomainName = "serveracademy.com"
 $SafeModePassword = "P@ssw0rd!"

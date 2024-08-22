@@ -4,32 +4,40 @@
 
 # NOTE: Make sure you have logged into your server as a DOMAIN administrator and not localAdmin
 
+# Run the following command to change your script execution policy so you can run this script:
+
+# Set-ExecutionPolicy -ExecutionPolicy Unrestricted
+
 # Install the DHCP Server role
 Install-WindowsFeature -Name DHCP -IncludeManagementTools
 
 # Configure DHCP scope
 Add-DhcpServerv4Scope -Name "Clients" -StartRange 10.0.2.100 -EndRange 10.0.2.200 -SubnetMask 255.255.255.0 -State Active
 
+# Define the domain name
+$DomainName = "serveracademy.com"
+$DomainDN = "DC=serveracademy,DC=com"
+
 # Create Organizational Units
 $OUs = @(
-    "OU=ServerAcademy,$DomainName",
-    "OU=Workstations,OU=ServerAcademy,$DomainName",
-    "OU=Groups,OU=ServerAcademy,$DomainName",
-    "OU=Users,OU=ServerAcademy,$DomainName",
-    "OU=Admins,OU=ServerAcademy,$DomainName",
-    "OU=Member Servers,OU=ServerAcademy,$DomainName",
-    "OU=Service Accounts,OU=ServerAcademy,$DomainName"
+    "OU=ServerAcademy,$DomainDN",
+    "OU=Workstations,OU=ServerAcademy,$DomainDN",
+    "OU=Groups,OU=ServerAcademy,$DomainDN",
+    "OU=Users,OU=ServerAcademy,$DomainDN",
+    "OU=Admins,OU=ServerAcademy,$DomainDN",
+    "OU=Member Servers,OU=ServerAcademy,$DomainDN",
+    "OU=Service Accounts,OU=ServerAcademy,$DomainDN"
 )
 
 foreach ($OU in $OUs) {
-    New-ADOrganizationalUnit -Name $OU.Split("=")[1] -Path $OU.Substring($OU.IndexOf(",") + 1)
+    New-ADOrganizationalUnit -Name ($OU.Split(",")[0].Split("=")[1]) -Path ($OU.Substring($OU.IndexOf(",") + 1))
 }
 
 # Create Users in the Users OU
 $Users = @(
-    @{Name="Paul Hill"; SamAccountName="Paul.Hill"; Path="OU=Users,OU=ServerAcademy,$DomainName"},
-    @{Name="Robert Hill"; SamAccountName="Robert.Hill"; Path="OU=Users,OU=ServerAcademy,$DomainName"},
-    @{Name="Test User"; SamAccountName="Test.User"; Path="OU=Users,OU=ServerAcademy,$DomainName"}
+    @{Name="Paul Hill"; SamAccountName="Paul.Hill"; Path="OU=Users,OU=ServerAcademy,$DomainDN"},
+    @{Name="Robert Hill"; SamAccountName="Robert.Hill"; Path="OU=Users,OU=ServerAcademy,$DomainDN"},
+    @{Name="Test User"; SamAccountName="Test.User"; Path="OU=Users,OU=ServerAcademy,$DomainDN"}
 )
 
 foreach ($User in $Users) {
@@ -39,9 +47,9 @@ foreach ($User in $Users) {
 
 # Create Users in the Admins OU
 $AdminUsers = @(
-    @{Name="Paul Hill (Admin)"; SamAccountName="Paul.Hill-Admin"; Path="OU=Admins,OU=ServerAcademy,$DomainName"},
-    @{Name="Robert Hill (Admin)"; SamAccountName="Robert.Hill-Admin"; Path="OU=Admins,OU=ServerAcademy,$DomainName"},
-    @{Name="Test User (Admin)"; SamAccountName="Test.User-Admin"; Path="OU=Admins,OU=ServerAcademy,$DomainName"}
+    @{Name="Paul Hill (Admin)"; SamAccountName="Paul.Hill-Admin"; Path="OU=Admins,OU=ServerAcademy,$DomainDN"},
+    @{Name="Robert Hill (Admin)"; SamAccountName="Robert.Hill-Admin"; Path="OU=Admins,OU=ServerAcademy,$DomainDN"},
+    @{Name="Test User (Admin)"; SamAccountName="Test.User-Admin"; Path="OU=Admins,OU=ServerAcademy,$DomainDN"}
 )
 
 foreach ($AdminUser in $AdminUsers) {

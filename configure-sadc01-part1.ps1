@@ -5,7 +5,7 @@
 
 # Set Variables
 $DomainName = "serveracademy.com"
-$SafeModePassword = "password123"  # Replace with a secure password
+$SafeModePassword = "P@ssw0rd!"
 
 # Install AD Domain Services
 Install-WindowsFeature AD-Domain-Services -IncludeManagementTools
